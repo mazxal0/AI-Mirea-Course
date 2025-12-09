@@ -6,6 +6,8 @@ from typing import Dict, Iterable, List, Union
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from pandas.api.types import CategoricalDtype
+from pandas.core.dtypes.common import CategoricalDtype, is_object_dtype
 
 PathLike = Union[str, Path]
 
@@ -123,3 +125,31 @@ def save_top_categories_tables(
         table.to_csv(out_path, index=False)
         paths.append(out_path)
     return paths
+
+
+def bar_chart(
+        col: pd.Series.Categorical,
+        out_dir: PathLike,
+) -> Path:
+    if not (is_object_dtype(col) or isinstance(col.dtype, CategoricalDtype)):
+        raise TypeError(
+            f"Column must be categorical or object: {col.name} ({col.dtype})"
+        )
+
+    col = col.astype("category")
+
+    out_dir = _ensure_dir(out_dir)
+
+    count_vals = col.value_counts()
+
+    plt.figure(figsize=(12, 8))
+    plt.bar(count_vals.index, count_vals.values, align="center")
+    plt.xlabel(col.name)
+    plt.ylabel("Count")
+    plt.title(f'{col.name} distribution')
+    plt.xticks(rotation=60)
+    plt.tight_layout()
+    plt.savefig(out_dir / f'{col.name}_bar_chart.png')
+    plt.close()
+
+    return out_dir

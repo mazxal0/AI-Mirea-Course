@@ -21,6 +21,7 @@ from .viz import (
     plot_missing_matrix,
     plot_histograms_per_column,
     save_top_categories_tables,
+    bar_chart,
 )
 
 app = typer.Typer(help="Мини-CLI для EDA CSV-файлов")
@@ -71,7 +72,8 @@ def report(
     title: str = typer.Option(f'EDA-отчёт', help="Заголовок отчета о датасете"),
     top_k_categories: int = typer.Option(5, help="Сколько категориальных признаков выводить"),
     max_rows_k_categories: int = typer.Option(5, help="Сколько top-значений выводить для категориальных признаков"),
-    json_summary: bool = typer.Option(False, help="Делать ли json сводку")
+    json_summary: bool = typer.Option(False, help="Делать ли json сводку"),
+    categorical_name: Optional[str] = typer.Option(None, "--categorical", '-c', help="Категориальный столбец для bar-chart"),
 ) -> None:
     """
     Сгенерировать полный EDA-отчёт:
@@ -147,12 +149,20 @@ def report(
             f.write("См. файлы в папке `top_categories/`.\n\n")
 
         f.write("## Гистограммы числовых колонок\n\n")
-        f.write("См. файлы `hist_*.png`.\n")
+        f.write("См. файлы `hist_*.png`.\n\n")
+
+        f.write(f'## Bar-chart категориального признака {categorical_name}\n\n')
+        f.write(f'См. файл `{categorical_name}_bar_chart.png`\n\n')
+
+        f.write(f'## Краткая характеристика в json формате\n\n')
+        f.write(f'См. файл `summary.json`\n\n')
 
     # 5. Картинки
     plot_histograms_per_column(df, out_root, max_columns=max_hist_columns)
     plot_missing_matrix(df, out_root / "missing_matrix.png")
     plot_correlation_heatmap(df, out_root / "correlation_heatmap.png")
+    if categorical_name is not None:
+        bar_chart(df[categorical_name], out_root)
 
     if json_summary:
         json_file = out_root / "summary.json"
@@ -173,6 +183,9 @@ def report(
     typer.echo(f"- Основной markdown: {md_path}")
     typer.echo("- Табличные файлы: summary.csv, missing.csv, correlation.csv, top_categories/*.csv")
     typer.echo("- Графики: hist_*.png, missing_matrix.png, correlation_heatmap.png")
+
+    if categorical_name is not None:
+        typer.echo(f"- Bar-chart сгенерирован на основе {categorical_name} признака")
 
     if json_summary:
         typer.echo(f"- JSON файл сохранён: '{out_root}/summary.json'")

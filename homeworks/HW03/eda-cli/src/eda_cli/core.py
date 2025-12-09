@@ -82,7 +82,7 @@ def summarize_dataset(
         std_val: Optional[float] = None
 
         if is_numeric and non_null > 0:
-            count_zeros = s.isnull().sum()
+            count_zeros = int((s == 0).sum())
             min_val = float(s.min())
             max_val = float(s.max())
             mean_val = float(s.mean())
@@ -190,21 +190,23 @@ def compute_quality_flags(summary: DatasetSummary, missing_df: pd.DataFrame) -> 
     flags["max_missing_share"] = max_missing_share
     flags["too_many_missing"] = max_missing_share > 0.5
 
-    flags["has_constant_columns"] = True
     flags["has_high_cardinality_categoricals"] = False
 
     zero_values_of_numeric_columns = 0
+    count_constant_columns = 0
 
     for col in summary.columns:
         if not col.unique == 1 or not col.missing == 0:
-            flags["has_constant_columns"] = False
+            count_constant_columns += 1
         if col.is_numeric:
             zero_values_of_numeric_columns += col.count_zeros / (col.non_null + col.missing)
         if not col.is_numeric and not flags["has_high_cardinality_categoricals"]:
             flags["has_high_cardinality_categoricals"] = col.unique > 10
 
-    # Порог 0.2
-    flags["has_many_zero_values"] = zero_values_of_numeric_columns >= 0.1
+    flags["has_constant_columns"] = count_constant_columns != len(summary.columns)
+
+    # Порог 0.3
+    flags["has_many_zero_values"] = bool(zero_values_of_numeric_columns >= 0.3)
 
     # Простейший «скор» качества
     score = 1.0

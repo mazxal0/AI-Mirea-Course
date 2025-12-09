@@ -1,0 +1,17 @@
+{
+    "Размеры": {
+        "rows": 36,
+        "cols": 14
+    },
+    "Качество данных": 0.5214285714285715,
+    "Эвристики данных": {
+        "too_few_rows": true,
+        "too_many_columns": false,
+        "max_missing_share": 0.05555555555555555,
+        "too_many_missing": false,
+        "has_high_cardinality_categoricals": true,
+        "has_constant_columns": false,
+        "has_many_zero_values": true,
+        "quality_score": 0.5214285714285715
+    }
+}

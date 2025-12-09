@@ -21,6 +21,45 @@ def _sample_df() -> pd.DataFrame:
         }
     )
 
+def _df_has_constant_column() -> pd.DataFrame:
+    return pd.DataFrame(
+        {
+            "name": ["Alex", "Alex", "Alex", "Alex"],
+            "age": [30, 10, 20, None],
+            "height": [140, 150, 160, 170],
+        }
+    )
+
+def _df_has_many_zeros() -> pd.DataFrame:
+    return pd.DataFrame(
+        {
+            "name": ["Oleg", 'Emely', 'Sergey', 'Andrey', 'Evgeniy', 'Maria'],
+            "age": [0, 0, 2, 0, 0, 10]
+        }
+    )
+
+def test_compute_quality_flags():
+    df = _sample_df()
+    other_df = _df_has_constant_column()
+
+    missing_df = missing_table(df)
+    missing_other_df = missing_table(other_df)
+
+    sample_fl = compute_quality_flags(summarize_dataset(df), missing_df)
+    other_fl = compute_quality_flags(summarize_dataset(other_df), missing_other_df)
+
+    assert sample_fl['has_constant_columns'] == False
+    assert other_fl['has_constant_columns'] == True
+
+def test_count_zero_values():
+    sample_df = _sample_df()
+    other_df = _df_has_many_zeros()
+
+    sample_fl = compute_quality_flags(summarize_dataset(sample_df), missing_table(sample_df))
+    assert sample_fl['has_many_zero_values'] == False
+
+    other_fl = compute_quality_flags(summarize_dataset(other_df), missing_table(other_df))
+    assert other_fl['has_many_zero_values'] == True
 
 def test_summarize_dataset_basic():
     df = _sample_df()

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Optional
 
@@ -70,6 +71,7 @@ def report(
     title: str = typer.Option(f'EDA-отчёт', help="Заголовок отчета о датасете"),
     top_k_categories: int = typer.Option(5, help="Сколько категориальных признаков выводить"),
     max_rows_k_categories: int = typer.Option(5, help="Сколько top-значений выводить для категориальных признаков"),
+    json_summary: bool = typer.Option(False, help="Делать ли json сводку")
 ) -> None:
     """
     Сгенерировать полный EDA-отчёт:
@@ -152,10 +154,54 @@ def report(
     plot_missing_matrix(df, out_root / "missing_matrix.png")
     plot_correlation_heatmap(df, out_root / "correlation_heatmap.png")
 
+    if json_summary:
+        json_file = out_root / "summary.json"
+        data = {
+                "Размеры": {
+                    "rows": summary.n_rows,
+                    "cols": summary.n_cols,
+                },
+                "Качество данных": quality_flags["quality_score"],
+                "Эвристики данных": quality_flags,
+            }
+
+
+        with open(json_file, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+
     typer.echo(f"Отчёт сгенерирован в каталоге: {out_root}")
     typer.echo(f"- Основной markdown: {md_path}")
     typer.echo("- Табличные файлы: summary.csv, missing.csv, correlation.csv, top_categories/*.csv")
     typer.echo("- Графики: hist_*.png, missing_matrix.png, correlation_heatmap.png")
+
+    if json_summary:
+        typer.echo(f"- JSON файл сохранён: '{out_root}/summary.json'")
+
+
+@app.command()
+def head(
+    path: str = typer.Argument(..., help="Путь к CSV-файлу."),
+    sep: str = typer.Option(",", help="Разделитель в CSV."),
+    encoding: str = typer.Option("utf-8", help="Кодировка файла."),
+    n: int = typer.Option(5, help="Сколько брать первых строк или какого размера выборку взять"),
+    is_random: bool = typer.Option(False, help='Брать ли рандомную выборку')
+) -> None:
+    """
+        Напечатать краткий обзор датасета (первые n строк или случайная выборка из n элементов)
+    """
+    df = _load_csv(Path(path), sep=sep, encoding=encoding)
+    if is_random:
+        df = df.sample(n=n)
+    else:
+        df = df.head(n)
+    summary: DatasetSummary = summarize_dataset(df)
+    summary_df = flatten_summary_for_print(summary)
+
+    typer.echo(f"Строк: {summary.n_rows}")
+    typer.echo(f"Столбцов: {summary.n_cols}")
+    typer.echo("\nКолонки:")
+
+    typer.echo(summary_df.to_string(index=False))
 
 
 if __name__ == "__main__":

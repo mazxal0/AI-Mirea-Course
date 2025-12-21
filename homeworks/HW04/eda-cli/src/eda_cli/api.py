@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 from time import perf_counter
+from collections import defaultdict
+from functools import wraps
 
 import pandas as pd
 from fastapi import FastAPI, File, HTTPException, UploadFile
@@ -20,9 +22,64 @@ app = FastAPI(
 )
 
 
+# METRICS
+class SimpleMetrics:
+    def __init__(self):
+        self.requests = defaultdict(int)
+        self.total_requests = 0
+        self.success_requests = 0
+        self.latencies_ms = []
+        self.last_ok_for_model = None
+    
+    def record(self, endpoint: str, success: bool, latency: int, result):
+        self.requests[f"{endpoint}_total"] += 1
+        self.total_requests += 1
+        if success:
+            self.requests[f"{endpoint}_success"] += 1
+            self.success_requests += 1 
+        
+        self.latencies_ms.append(latency)
+        if len(self.latencies_ms) > 1000:
+            self.latencies_ms.pop(0)
+
+        if success and result is not None:
+            if hasattr(result, 'ok_for_model') and result.ok_for_model:
+                if hasattr(result, 'dict'):
+                    self.last_ok_for_model = result.dict()
+                elif hasattr(result, '__dict__'):
+                    self.last_ok_for_model = result.__dict__
+
+    def get_metrics(self):
+        avgLatency = round(sum(self.latencies_ms) / len(self.latencies_ms), 3) if self.latencies_ms else 0
+        return {
+            "requests": dict(self.requests),
+            "total_requests": self.total_requests,
+            "success_request": self.success_requests,
+            "avg_latency_ms": avgLatency,
+            "last_response": self.last_ok_for_model,
+        }
+
+metrics = SimpleMetrics()
+
+
+def track_metrics(endpoint: str):
+    def decorator(func: callable):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            start = perf_counter()
+            try:
+                result = await func(*args, **kwargs)
+                latency = (perf_counter() - start) * 1000
+                metrics.record(endpoint, True, latency, result)
+                return result
+            except Exception as e:
+                latency = (perf_counter() - start) * 1000
+                metrics.record(endpoint, False, latency, result)
+                raise e
+        return wrapper
+    return decorator
+
 # ---------- Модели запросов/ответов ----------
-
-
 class QualityRequest(BaseModel):
     """Агрегированные признаки датасета – 'фичи' для заглушки модели."""
 
@@ -247,16 +304,14 @@ async def quality_from_csv(file: UploadFile = File(...)) -> QualityResponse:
 @app.post(
     "/quality-flags-from-csv",
     tags=["quality"],
-    summary="Оценка качества по CSV-файлу с использованием EDA-ядра",
+    summary="Флаги качества по CSV-файлу с использованием EDA-ядра",
 )
 async def quality_flags_from_csv(file: UploadFile = File(...)) -> dict:
     """
     Эндпоинт, который принимает CSV-файл, запускает EDA-ядро
-    (compute_quality_flags)
+    (summarize_dataset + missing_table + compute_quality_flags)
     и возвращает флаги качества данных.
     """
-
-    start = perf_counter()
 
     if file.content_type not in ("text/csv", "application/vnd.ms-excel", "application/octet-stream"):
         # content_type от браузера может быть разным, поэтому проверка мягкая
@@ -279,4 +334,63 @@ async def quality_flags_from_csv(file: UploadFile = File(...)) -> dict:
 
     return {"flags": flags_all}
 
+
+@app.post(
+    "/summary-from-csv",
+    tags=['quality'],
+    summary='Вывод json сводки по csv файла'
+)
+@track_metrics('summary-from-csv')
+async def summaryFromCsv(file: UploadFile = File(...)) -> dict:
+    """
+        Endpoint which start the kernel, read csv file and return json
+    """
+
+    if file.content_type not in ("text/csv", "application/vnd.ms-excel", "application/octet-stream"):
+        raise HTTPException(status_code=400, detail="Ожидается CSV-файл (content-type text/csv).")
+
+    try:
+        # FastAPI даёт file.file как file-like объект, который можно читать pandas'ом
+        df = pd.read_csv(file.file)
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(status_code=400, detail=f"Не удалось прочитать CSV: {exc}")
+
+    if df.empty:
+        raise HTTPException(status_code=400, detail="CSV-файл не содержит данных (пустой DataFrame).")
+
+
+    summary = summarize_dataset(df)
+    missing = missing_table(df)
+    quality_flags = compute_quality_flags(summary=summary, missing_df=missing)
     
+    try:
+        data = {
+                    "Размеры": {
+                        "rows": summary.n_rows,
+                        "cols": summary.n_cols,
+                    },
+                    "Качество данных": quality_flags["quality_score"],
+                    "Эвристики данных": quality_flags,
+                }
+    except AttributeError:
+        data = {
+                    "Размеры": {
+                        "rows": df.shape[0],
+                        "cols": df.shape[1],
+                    },
+                    "Качество данных": quality_flags["quality_score"],
+                    "Эвристики данных": quality_flags,
+                }
+
+    return {
+        "data": data
+    }
+
+@app.get(
+    "/metrics",
+    tags=['metrics'],
+)
+async def get_metrics():
+    return {
+        "metrics": metrics.get_metrics()
+    }

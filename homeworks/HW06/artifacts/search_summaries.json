@@ -1,0 +1,35 @@
+{
+  "DummyClassifier": {},
+  "LogisticRegression": {
+    "best_params": {
+      "lr__C": 0.1,
+      "lr__solver": "lbfgs"
+    },
+    "roc_auc": 0.8214950220697309
+  },
+  "DecisionTreeClassifier": {
+    "best_params": {
+      "ccp_alpha": 0,
+      "max_depth": 7,
+      "min_samples_leaf": 20
+    },
+    "roc_auc": 0.7751010846088564
+  },
+  "RandomForest": {
+    "best_params": {
+      "max_depth": 10,
+      "max_features": 0.5,
+      "min_samples_leaf": 10
+    },
+    "roc_auc": 0.8964805503177719
+  },
+  "HistGradientBoostingClassifier": {
+    "best_params": {
+      "learning_rate": 0.05,
+      "max_depth": 3,
+      "max_leaf_nodes": 15
+    },
+    "roc_auc": 0.8880418171801047
+  },
+  "StackingClassifier": {}
+}

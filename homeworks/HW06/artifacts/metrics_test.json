@@ -1,11 +1,32 @@
 {
+  "meta": {
+    "schema_version": "1.0",
+    "created_at": "2026-01-19T10:49:11.687236+00:00",
+    "experiment": {
+      "random_state": 1,
+      "scoring": "roc_auc"
+    },
+    "dataset": {
+      "path": "./datasets/S06-hw-dataset-04.csv",
+      "target": "target"
+    },
+    "split": {
+      "type": "train_test",
+      "test_size": 0.2,
+      "stratified": true
+    }
+  },
   "results": [
     {
-      "accuracy": 0.9788,
-      "precision": 0.8723404255319149,
-      "recall": 0.6666666666666666,
-      "f1": 0.7557603686635944,
-      "matrix": [
+      "model": "RandomForest",
+      "metrics": {
+        "accuracy": 0.9788,
+        "precision": 0.8723404255319149,
+        "recall": 0.6666666666666666,
+        "f1": 0.7557603686635944,
+        "roc_auc": 0.8308091431776748
+      },
+      "confusion_matrix": [
         [
           4730,
           24
@@ -14,16 +35,18 @@
           82,
           164
         ]
-      ],
-      "roc_auc": 0.8308091431776748,
-      "label": "RandomForest"
+      ]
     },
     {
-      "accuracy": 0.9796,
-      "precision": 0.9137931034482759,
-      "recall": 0.6463414634146342,
-      "f1": 0.7571428571428571,
-      "matrix": [
+      "model": "StackingClassifier",
+      "metrics": {
+        "accuracy": 0.9796,
+        "precision": 0.9137931034482759,
+        "recall": 0.6463414634146342,
+        "f1": 0.7571428571428571,
+        "roc_auc": 0.8215931128600306
+      },
+      "confusion_matrix": [
         [
           4739,
           15
@@ -32,16 +55,18 @@
           87,
           159
         ]
-      ],
-      "roc_auc": 0.8215931128600306,
-      "label": "StackingClassifier"
+      ]
     },
     {
-      "accuracy": 0.973,
-      "precision": 0.9743589743589743,
-      "recall": 0.4634146341463415,
-      "f1": 0.628099173553719,
-      "matrix": [
+      "model": "HistGradientBoostingClassifier",
+      "metrics": {
+        "accuracy": 0.973,
+        "precision": 0.9743589743589743,
+        "recall": 0.4634146341463415,
+        "f1": 0.628099173553719,
+        "roc_auc": 0.7313917933037134
+      },
+      "confusion_matrix": [
         [
           4751,
           3
@@ -50,16 +75,18 @@
           132,
           114
         ]
-      ],
-      "roc_auc": 0.7313917933037134,
-      "label": "HistGradientBoostingClassifier"
+      ]
     },
     {
-      "accuracy": 0.9662,
-      "precision": 0.808,
-      "recall": 0.4105691056910569,
-      "f1": 0.5444743935309974,
-      "matrix": [
+      "model": "DecisionTreeClassifier",
+      "metrics": {
+        "accuracy": 0.9662,
+        "precision": 0.808,
+        "recall": 0.4105691056910569,
+        "f1": 0.5444743935309974,
+        "roc_auc": 0.7027603626898701
+      },
+      "confusion_matrix": [
         [
           4730,
           24
@@ -68,16 +95,18 @@
           145,
           101
         ]
-      ],
-      "roc_auc": 0.7027603626898701,
-      "label": "DecisionTreeClassifier"
+      ]
     },
     {
-      "accuracy": 0.963,
-      "precision": 0.9295774647887324,
-      "recall": 0.2682926829268293,
-      "f1": 0.416403785488959,
-      "matrix": [
+      "model": "LogisticRegression",
+      "metrics": {
+        "accuracy": 0.963,
+        "precision": 0.9295774647887324,
+        "recall": 0.2682926829268293,
+        "f1": 0.416403785488959,
+        "roc_auc": 0.6336204685143192
+      },
+      "confusion_matrix": [
         [
           4749,
           5
@@ -86,16 +115,18 @@
           180,
           66
         ]
-      ],
-      "roc_auc": 0.6336204685143192,
-      "label": "LogisticRegression"
+      ]
     },
     {
-      "accuracy": 0.9508,
-      "precision": 1.0,
-      "recall": 0.0,
-      "f1": 0.0,
-      "matrix": [
+      "model": "DummyClassifier",
+      "metrics": {
+        "accuracy": 0.9508,
+        "precision": 1.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "roc_auc": 0.5
+      },
+      "confusion_matrix": [
         [
           4754,
           0
@@ -104,9 +135,7 @@
           246,
           0
         ]
-      ],
-      "roc_auc": 0.5,
-      "label": "DummyClassifier"
+      ]
     }
   ]
 }

@@ -19,7 +19,7 @@
         "weight_decay": 0.0
     },
     "training": {
-        "epochs": 9,
+        "epochs": 8,
         "early_stopping_patience": 5
     }
 }

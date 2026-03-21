@@ -9,7 +9,7 @@
 ## 2. Среда и воспроизводимость
 
 - Python: 3.11.14
-- torch / torchvision: 2.10.0 / 0.25.0
+- torch / torchvision: 2.10.0+cu121 / 0.25.0+cu121
 - Устройство (CPU/GPU): GPU (laptop RTX 3060)
 - Seed: 42
 - Как запустить: открыть `HW10-11.ipynb` и выполнить Run All.

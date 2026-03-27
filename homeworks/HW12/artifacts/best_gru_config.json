@@ -1,0 +1,15 @@
+{
+    "model": "GRU",
+    "optimizer": "Adam",
+    "criterion": "L1Loss",
+    "epochs": 80,
+    "device": "cpu",
+    "seed": 42,
+    "configurations": {
+        "num_layers": 7,
+        "dropout_p": 0.0,
+        "batch_size": 32,
+        "learning_rate": 0.001,
+        "out_size": 32
+    }
+}

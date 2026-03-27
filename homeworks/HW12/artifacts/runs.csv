@@ -1,0 +1,9 @@
+experiment_id,task,dataset,seed,split_summary,window_size,horizon,model_summary,features_summary,scaler,optimizer,lr,epochs_trained,best_val_mae,best_val_rmse,best_val_mape,test_mae,test_rmse,test_mape,notes
+B1,forecast,S12-hw-dataset.csv,42,70 | 15 | 15,0,1,Baseline 1,6 features + 1,StandardScaler,,,,6.4406201550387605,8.203475383768334,4.392183983392367,6.4406201550387605,8.203475383768334,4.392183983392367,
+B2,forecast,S12-hw-dataset.csv,42,70 | 15 | 15,0,1,Baseline 2,6 features + 1,StandardScaler,,,,12.726609080841639,15.242136544735018,8.830313050776448,,,,
+B3,forecast,S12-hw-dataset.csv,42,70 | 15 | 15,0,1,Ridge,6 features + 1,StandardScaler,,,,7.262053029499181,8.807937427577684,4.841361202170742,,,,
+R1,forecast,S12-hw-dataset.csv,42,70 | 15 | 15,32,1,GRU + Linear,6 features + 1,StandardScaler,Adam,1e-3,80,8.304198783638038,10.72348899387065,5.378467203410469,,,,
+B1,forecast,S12-hw-dataset.csv,42,70 | 15 | 15,0,1,Baseline 1,6 features + 1,StandardScaler,,,,6.4406201550387605,8.203475383768334,4.392183983392367,6.34095826893354,8.060187080029195,4.146298982666311,
+B2,forecast,S12-hw-dataset.csv,42,70 | 15 | 15,0,1,Baseline 2,6 features + 1,StandardScaler,,,,12.726609080841639,15.242136544735018,8.830313050776448,,,,
+B3,forecast,S12-hw-dataset.csv,42,70 | 15 | 15,0,1,Ridge,6 features + 1,StandardScaler,,,,7.262053029499181,8.807937427577684,4.841361202170742,,,,
+R1,forecast,S12-hw-dataset.csv,42,70 | 15 | 15,32,1,GRU + Linear,6 features + 1,StandardScaler,Adam,1e-3,80,8.304198783638038,10.72348899387065,5.378467203410469,,,,

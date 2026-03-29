@@ -9,8 +9,8 @@
 ## 2. Среда и воспроизводимость
 
 - Python: 3.11.14
-- torch / torchvision: 2.10.0+cu121 / 0.25.0+cu121
-- Устройство (CPU/GPU): GPU (laptop RTX 3060)
+- torch / torchvision: 2.10.0 / 0.25.0
+- Устройство (CPU/GPU): CPU M4 (Macbook Air)
 - Seed: 42
 - Как запустить: открыть `HW10-11.ipynb` и выполнить Run All.
 
@@ -54,14 +54,6 @@
 
 ## 5. Часть B: постановка задачи и режимы оценки (V1-V2)
 
-### Если выбран detection track
-
-- Модель: FCN resnet50
-- V1: `score_threshold = 0.3`
-- V2: `score_threshold = 0.7`
-- Как считался IoU:
-- Как считались precision / recall:
-
 ### Если выбран segmentation track
 
 - Модель: FCN resnet50
@@ -81,7 +73,8 @@
 - Кривые лучшего прогона классификации: `./artifacts/figures/classification_curves_best.png`
 - Сравнение C1-C4: `./artifacts/figures/classification_compare.png`
 - Визуализация аугментаций: `./artifacts/figures/augmentations_preview.png`
-- Визуализации второй части: `./artifacts/figures/...`
+- Визуализации второй части: `./artifacts/figures/segmentation_examples.png`
+- Метрики второй части: `./artifacts/figures/segmentation_metrics.png`
 
 Короткая сводка (6-10 строк):
 

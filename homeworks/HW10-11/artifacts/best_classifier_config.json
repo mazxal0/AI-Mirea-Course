@@ -2,7 +2,7 @@
     "experiment_id": "C4",
     "optimizer": "Adam",
     "lr": 0.001,
-    "epochs_trained": 12,
+    "epochs_trained": 4,
     "dataset": "cifar100",
     "model_summary": "resnet_18",
     "notes": "with finetune fc and layer4",

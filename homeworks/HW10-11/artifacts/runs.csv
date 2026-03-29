@@ -1,7 +1,7 @@
-experiment_id,task,dataset,seed,model_summary,optimizer,lr,epochs_trained,best_val_accuracy,test_accuracy,mean_iou,notes
-C1,classification,cifar100,42,simple_cnn,Adam,0.001,12,0.3975,0.0,,
-C2,classification,cifar100,42,simple_cnn,Adam,0.001,12,0.3364,0.0,,with augmentation
-C3,classification,cifar100,42,resnet_18,Adam,0.001,12,0.584,0.0,,with finetune only fc
-C4,classification,cifar100,42,resnet_18,Adam,0.001,12,0.6924,0.688,,with finetune fc and layer4
-V1,segmentation,VOCSegmentation,42,fcn_resnet50,,0.0,0,0.0,0.0,0.7347015573201033,
-V2,segmentation,VOCSegmentation,42,fcn_resnet50,,0.0,0,0.0,0.0,0.7285161154493089,
+experiment_id,task,dataset,seed,model_summary,optimizer,lr,epochs_trained,best_val_accuracy,test_accuracy,precision,recall,mean_iou,notes
+C1,classification,cifar100,42,simple_cnn,Adam,0.001,12,0.3937,,,,,
+C2,classification,cifar100,42,simple_cnn,Adam,0.001,12,0.3426,,,,,with augmentation
+C3,classification,cifar100,42,resnet_18,Adam,0.001,4,0.5026666666666667,,,,,with finetune only fc
+C4,classification,cifar100,42,resnet_18,Adam,0.001,4,0.5253333333333333,0.504,,,,with finetune fc and layer4
+V1,segmentation,VOCSegmentation,42,fcn_resnet50,,0.0,0,0.0,,,,0.7346707596590815,
+V2,segmentation,VOCSegmentation,42,fcn_resnet50,,0.0,0,0.0,,,,0.728504311529315,

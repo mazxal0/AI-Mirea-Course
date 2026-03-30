@@ -3,5 +3,5 @@ C1,classification,cifar100,42,simple_cnn,Adam,0.001,12,0.3937,,,,,
 C2,classification,cifar100,42,simple_cnn,Adam,0.001,12,0.3426,,,,,with augmentation
 C3,classification,cifar100,42,resnet_18,Adam,0.001,4,0.5026666666666667,,,,,with finetune only fc
 C4,classification,cifar100,42,resnet_18,Adam,0.001,4,0.5253333333333333,0.504,,,,with finetune fc and layer4
-V1,segmentation,VOCSegmentation,42,fcn_resnet50,,NaN,0,0.0,,,,0.7346707596590815,
-V2,segmentation,VOCSegmentation,42,fcn_resnet50,,NaN,0,0.0,,,,0.728504311529315,
+V1,segmentation,VOCSegmentation,42,fcn_resnet50,,,0,0.0,,,,0.7346707596590815,
+V2,segmentation,VOCSegmentation,42,fcn_resnet50,,,0,0.0,,,,0.728504311529315,

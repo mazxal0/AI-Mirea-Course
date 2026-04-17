@@ -1,4 +1,4 @@
-query,relevant_doc_ids,predicted_doc_ids,retrieval_hit@3
+query,expected_source,retrieved_sources,hit_at_k
 Для чего нужны сообственные значения векторов?,"['doc_18', 'doc_19']","['doc_04', 'doc_20', 'doc_07']",0
 Как работает FAISS?,['doc_11'],"['doc_11', 'doc_02', 'doc_03']",1
 Зачем нужна нормализация векторов?,['doc_04'],"['doc_04', 'doc_06', 'doc_19']",1

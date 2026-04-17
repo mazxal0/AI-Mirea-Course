@@ -1,3 +1,4 @@
 query,before_retrieved_sources,after_retrieved_sources,changed
 За сколько работает сортировка пузырьком?,"['doc_25', 'doc_02', 'doc_09']","['doc_26', 'doc_27', 'doc_26']",True
 Какой алгоритм сортировки быстрее?,"['doc_24', 'doc_11', 'doc_22']","['doc_27', 'doc_26', 'doc_26']",True
+Как работает быстрая сортировка?,"['doc_24', 'doc_11', 'doc_03']","['doc_27', 'doc_26', 'doc_26']",True

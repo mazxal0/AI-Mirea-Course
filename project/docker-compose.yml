@@ -1,0 +1,11 @@
+services:
+  text-sim:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=${MODEL_PATH}
+      - LOGGER_PATH=${LOGGER_PATH}
+      - DEVICE=${DEVICE}
+      - THRESHOLD=${THRESHOLD}
+      - LOG_LEVEL=${LOG_LEVEL}

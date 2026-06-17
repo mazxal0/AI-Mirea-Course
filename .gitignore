@@ -55,3 +55,9 @@ logs/
 *.tmp
 *.bak
 *.old
+
+# Фалйы для ДЗ
+homeworks/HW03/eda-cli/reports
+homeworks/HW08-09/data/
+homeworks/*/data
+homeworks/*/outputs

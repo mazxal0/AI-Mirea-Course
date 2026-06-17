@@ -1,0 +1,15 @@
+{
+    "experiment_id": "C4",
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "epochs_trained": 4,
+    "dataset": "cifar100",
+    "model_summary": "resnet_18",
+    "notes": "with finetune fc and layer4",
+    "seed": 42,
+    "transformers": {
+        "resize": 224,
+        "normalize": true,
+        "to_tensor": true
+    }
+}

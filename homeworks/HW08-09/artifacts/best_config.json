@@ -1,0 +1,25 @@
+{
+    "dataset": "EMNIST",
+    "seed": 42,
+    "model": {
+        "input_size": 784,
+        "hidden_dims": [
+            512,
+            256,
+            128
+        ],
+        "activation": "relu",
+        "dropout_p": 0.0,
+        "batch_norm": true,
+        "class_num": 47
+    },
+    "optimizer": {
+        "name": "Adam",
+        "lr": 0.001,
+        "weight_decay": 0.0
+    },
+    "training": {
+        "epochs": 8,
+        "early_stopping_patience": 5
+    }
+}
